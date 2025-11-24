@@ -6,12 +6,12 @@ CREATE DATABASE my_eshop_db
 	*/
 	
 -- Creamos el usuario administrador para esta base de datos (y le damos permisos)
-CREATE USER 'usuarios_db'@'%' IDENTIFIED BY 'Abcd1234';
-GRANT ALL PRIVILEGES ON usuarios_db.* TO 'usuarios_db'@'%';
+CREATE USER 'usuario_my_eshop'@'%' IDENTIFIED BY 'Abcd1234';
+GRANT ALL PRIVILEGES ON usuario_my_eshop.* TO 'usuario_my_eshop'@'%';
 FLUSH PRIVILEGES;
 
 -- Usar la base de datos creada
-USE usuarios_db;
+USE my_eshop_db;
 
 -- Mostrar el estado de la base de datos creada
-SHOW TABLE STATUS FROM usuarios_db;
+SHOW TABLE STATUS FROM my_eshop_db;
