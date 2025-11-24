@@ -1,0 +1,16 @@
+docker run -d `
+  --name my_eshop_mariadb `
+  -p 3310:3306 `
+  -e MARIADB_DATABASE=my_eshop_db `
+  -e MARIADB_ROOT_PASSWORD=Abcd1234 `
+  -v my_eshop_mariadb_data:/var/lib/mysql `
+  -v my_eshop_mariadb_logs:/var/log/mysql `
+  -v my_eshop_mariadb_conf:/etc/mysql/conf.d `
+  mariadb:latest `
+  --character-set-server=utf8mb4 `
+  --collation-server=utf8mb4_es_0900_ai_ci
+
+    
+    
+
+    
