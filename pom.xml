@@ -83,7 +83,7 @@
       </activation>
       <properties>
         <db.url>jdbc:mariadb://localhost:3310/my_eshop_db?createDatabaseIfNotExist=false</db.url>
-        <db.user>my_eshop_db</db.user>
+        <db.user>usuario_my_eshop</db.user>
         <db.pass>Abcd1234</db.pass>
         <db.dialect>org.hibernate.dialect.MariaDBDialect</db.dialect>
       </properties>
@@ -92,7 +92,7 @@
     <profile>
       <id>pre</id>
       <properties>
-        <db.url>jdbc:mariadb://192.168.1.100:3306/my_eshop_db</db.url>
+        <db.url>jdbc:mariadb://192.168.1.100:3310/my_eshop_db</db.url>
         <db.user>pre_user</db.user>
         <db.pass>pre_pass_segura</db.pass>
         <db.dialect>org.hibernate.dialect.MariaDBDialect</db.dialect>
@@ -102,7 +102,7 @@
     <profile>
       <id>pro</id>
       <properties>
-        <db.url>jdbc:mariadb://servidor.produccion.com:3306/my_eshop_db</db.url>
+        <db.url>jdbc:mariadb://servidor.produccion.com:3310/my_eshop_db</db.url>
         <db.user>pro_user</db.user>
         <db.pass>!PROD_PASS_MUY_SEGURA!</db.pass>
         <db.dialect>org.hibernate.dialect.MariaDBDialect</db.dialect>
