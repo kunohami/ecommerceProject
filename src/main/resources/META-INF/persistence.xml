@@ -1,0 +1,41 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
+	version="3.2">
+
+	<persistence-unit name="usuarios-jpa-pu" transaction-type="RESOURCE_LOCAL">
+
+		<class>com.silviarafa.ecommerce.ecommerceProject.model.Cliente</class>
+		<class>com.silviarafa.ecommerce.ecommerceProject.model.InformacionFiscal</class>
+		<class>com.silviarafa.ecommerce.ecommerceProject.model.Compra</class>
+		<class>com.silviarafa.ecommerce.ecommerceProject.model.Articulo</class>
+		<class>com.silviarafa.ecommerce.ecommerceProject.model.ArticuloCompra</class>
+
+		<properties>
+			<property
+				name="jakarta.persistence.jdbc.driver"
+				value="org.mariadb.jdbc.Driver" />
+
+			<property
+				name="jakarta.persistence.jdbc.url"
+				value="${db.url}" />
+
+			<property
+				name="jakarta.persistence.jdbc.user"
+				value="${db.user}" />
+
+			<property
+				name="jakarta.persistence.jdbc.password"
+				value="${db.pass}" />
+
+			<property
+				name="hibernate.dialect"
+				value="${db.dialect}" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+
+		</properties>
+	</persistence-unit>
+</persistence>
