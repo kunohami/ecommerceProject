@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS articulo (
   nombre varchar(100) DEFAULT '',
   descripcion text DEFAULT '',
   precio_actual decimal(10,2) DEFAULT 0.0,
-  stock INTEGER 0,
+  stock INTEGER DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
