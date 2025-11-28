@@ -1,0 +1,238 @@
+
+
+El error que da en Cliente es porque esos métodos no existen en la clase Compra(porque de esa clase te ocupas tú), 
+he seguido el código de Agustín asique supuestamente tu deberías hacer algún método parecido
+
+-----------------------------
+
+Le he preguntado al Chat como hacer con el problema de eliminar el cliente y que no se borre lo de Compra para ponerlo a vacío.
+A mi creo que me parece buena idea esa, pero te pregunto a tí que te parece, luego cuando lo revises me dices y si te parece bien lo cambiamo si no lo dejamos como lo tenemos.
+Me ha puesto esto:
+
+# Perfecto. Te voy a preparar un ejemplo completo para MariaDB siguiendo estas reglas:
+# Mantener las compras aunque el cliente “desaparezca”.
+# Guardar en cliente_nif_cif el NIF original aunque el cliente se elimine.
+# Evitar romper la base de datos con claves foráneas.
+# Usar Hibernate/JPA correctamente.
+# Mantener los estilos de tus clases (Usuario/Perfil). ->  "En mi caso porque son las clases que he copiado de Agustín"
+
+1️⃣ Tabla Cliente
+CREATE TABLE IF NOT EXISTS cliente (
+    nif_cif VARCHAR(20) NOT NULL,
+    nombre_completo VARCHAR(100) DEFAULT '',
+    email VARCHAR(150) DEFAULT '',
+    fecha_registro DATETIME DEFAULT NULL,
+    PRIMARY KEY (nif_cif)
+) ENGINE=InnoDB;
+
+
+# Sin FK hacia compras. Así podemos eliminar clientes y las compras quedan con el NIF original.
+
+2️⃣ Tabla InformacionFiscal (1:1)
+CREATE TABLE IF NOT EXISTS informacion_fiscal (
+    nif_cif VARCHAR(20) NOT NULL,
+    telefono VARCHAR(20) DEFAULT '',
+    direccion_fiscal VARCHAR(255) DEFAULT '',
+    PRIMARY KEY (nif_cif),
+    CONSTRAINT informacion_fiscal_cliente_FK
+        FOREIGN KEY (nif_cif) REFERENCES cliente(nif_cif)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+# Aquí sí usamos ON DELETE CASCADE porque si borras un cliente, su información fiscal se borra automáticamente.
+
+3️⃣ Tabla Compra (1:N con Cliente)
+CREATE TABLE IF NOT EXISTS compra (
+    id INT NOT NULL AUTO_INCREMENT,
+    fecha_compra DATETIME DEFAULT NULL,
+    estado VARCHAR(20) DEFAULT '',
+    direccion_entrega VARCHAR(255) DEFAULT '',
+    precio_total DECIMAL(10,2) NOT NULL,
+    cliente_nif_cif VARCHAR(20) DEFAULT '', -- guardamos el NIF aunque el cliente desaparezca
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+
+# Nota: NO hay FK aquí. Esto permite borrar clientes y conservar los NIF en las compras.
+# Puedes opcionalmente poner cliente_nif_cif como NOT NULL, con valor por defecto ''.
+
+4️⃣ Entidad Cliente
+--------------------------------------------------------------------------------------------
+package com.silviarafa.ecommerce.ecommerceProject.model;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "cliente")
+public class Cliente {
+
+    @Id
+    @Column(name = "nif_cif")
+    private String nifCif;
+
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
+
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
+
+    // --- RELACIÓN 1:1 ---
+    @OneToOne(mappedBy = "cliente",
+              cascade = CascadeType.ALL,
+              orphanRemoval = true,
+              fetch = FetchType.LAZY)
+    private InformacionFiscal informacionFiscal;
+
+    // --- RELACIÓN 1:N ---
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Compra> compras = new HashSet<>();
+
+    public Cliente() {}
+
+    // --- Getters & Setters ---
+    public String getNifCif() { return nifCif; }
+    public void setNifCif(String nifCif) { this.nifCif = nifCif; }
+
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public LocalDateTime getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDateTime fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+
+    public InformacionFiscal getInformacionFiscal() { return informacionFiscal; }
+
+    public void setInformacionFiscal(InformacionFiscal info) {
+        if (info == null) {
+            if (this.informacionFiscal != null) {
+                this.informacionFiscal.setCliente(null);
+            }
+        } else {
+            info.setCliente(this);
+        }
+        this.informacionFiscal = info;
+    }
+
+    public Set<Compra> getCompras() { return compras; }
+    public void setCompras(Set<Compra> compras) { this.compras = compras; }
+
+    public void addCompra(Compra compra) {
+        compras.add(compra);
+        compra.setCliente(this);
+    }
+
+    public void removeCompra(Compra compra) {
+        compras.remove(compra);
+        compra.setCliente(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cliente)) return false;
+        Cliente c = (Cliente) o;
+        return Objects.equals(nifCif, c.nifCif);
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(nifCif); }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nifCif='" + nifCif + '\'' +
+                ", nombreCompleto='" + nombreCompleto + '\'' +
+                ", email='" + email + '\'' +
+                ", fechaRegistro=" + fechaRegistro +
+                ", numCompras=" + compras.size() +
+                '}';
+    }
+}
+--------------------------------------------------------------------------------
+
+5️⃣ Entidad Compra
+--------------------------------------------------------------------------------
+package com.silviarafa.ecommerce.ecommerceProject.model;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "compra")
+public class Compra {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "fecha_compra")
+    private LocalDateTime fechaCompra;
+
+    @Column(name = "estado")
+    private String estado = "";
+
+    @Column(name = "direccion_entrega")
+    private String direccionEntrega = "";
+
+    @Column(name = "precio_total")
+    private BigDecimal precioTotal;
+
+    @Column(name = "cliente_nif_cif")
+    private String clienteNifCif;
+
+    // Relación opcional con Cliente (solo para navegación)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cliente cliente;
+
+    public Compra() {}
+
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        if (cliente != null) {
+            this.clienteNifCif = cliente.getNifCif();
+        }
+    }
+
+    // Getters/Setters normales para otros campos...
+}
+-------------------------------------------------------------------------------
+
+# ✅ Con este diseño:
+# Puedes borrar un Cliente y mantener las compras.
+# cliente_nif_cif conserva el NIF original.
+# La información fiscal se elimina automáticamente.
+# Hibernate/JPA sigue funcionando.
+# La integridad referencial de compras no se rompe.
+
+
+
+
