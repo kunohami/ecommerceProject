@@ -23,8 +23,7 @@ CREATE TABLE IF NOT EXISTS cliente (
   nombre_completo varchar(100) DEFAULT '',
   email varchar(150) DEFAULT '',
   fecha_registro datetime DEFAULT NULL,
-  PRIMARY KEY (nif_cif),
-  UNIQUE KEY NewTable_UNIQUE (email)
+  PRIMARY KEY (nif_cif)
 ) ENGINE=InnoDB;
 
 

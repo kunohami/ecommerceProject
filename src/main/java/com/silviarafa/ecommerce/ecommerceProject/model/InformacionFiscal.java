@@ -11,6 +11,21 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Representa la información fiscal asociada a un cliente en el sistemas de gestión de pedidos para un e-commerce.
+ * <p>
+ * Esta entidad se mapea a la tabla {@code informacion_fiscal} en la base de datos.
+ * Contiene detalles fiscales del cliente, como su NIF/CIF, teléfono y dirección fiscal.
+ * </p>
+ * <h3>Relaciones</h3>
+ * <ul>
+ *     <li><b>Cliente (One-to-One):</b> Cada información fiscal está asociada a un único cliente. La relación es gestionada por la entidad {@link Cliente}.</li>
+ * </ul>
+ *
+ * @author Silvia Balmaseda
+ * @version 1.0
+ * @since 2025-11-28
+ */
 @Entity
 @Table(name = "informacion_fiscal")
 public class InformacionFiscal {
