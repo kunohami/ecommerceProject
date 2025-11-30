@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS compra (
   estado varchar(20) DEFAULT '',
   direccion_entrega varchar(255) DEFAULT '',
   precio_total decimal(10,2) NOT NULL,
-  cliente_nif_cif varchar(20) NOT NULL,
+  cliente_nif_cif varchar(20) NULL, -- esto permite asignar null a compras antes de borrar al cliente
   PRIMARY KEY (id),
   KEY compra_cliente_FK (cliente_nif_cif),
   CONSTRAINT compra_cliente_FK 
