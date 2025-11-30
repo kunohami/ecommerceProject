@@ -14,6 +14,23 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Representa un cliente en el sistemas de gestión de pedidos para un e-commerce.
+ * <p>
+ * Esta entidad se mapea a la tabla {@code cliente} en la base de datos.
+ * Contiene información básica sobre el cliente, como su NIF/CIF, nombre completo,
+ * correo electrónico y fecha de registro.
+ * </p>
+ * <h3>Relaciones</h3>
+ * <ul>
+ *     <li><b>InformacionFiscal (One-to-One):</b> Cada cliente tiene una única información fiscal asociada. La relación es gestionada por la entidad {@link InformacionFiscal}.</li>
+ *     <li><b>Compra (One-to-Many):</b> Un cliente puede tener múltiples compras asociadas. La relación es gestionada por la entidad {@link Compra}.</li>
+ * </ul>
+ *
+ * @author Silvia Balmaseda
+ * @version 1.0
+ * @since 2025-11-28
+ */
 @Entity
 @Table(name = "cliente")
 public class Cliente {
