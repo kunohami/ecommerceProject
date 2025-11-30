@@ -50,11 +50,11 @@ public class InformacionFiscal {
 	public InformacionFiscal() {
 	}
 
-	public String getId() {
+	public String getNifCif() {
 		return nifCif;
 	}
 
-	public void setId(String id) {
+	public void setNifCif(String id) {
 		this.nifCif = id;
 	}
 
