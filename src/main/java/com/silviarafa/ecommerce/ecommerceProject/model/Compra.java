@@ -65,7 +65,7 @@ public class Compra {
 	private BigDecimal precioTotal;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cliente_nif_cif", nullable = false)
+	@JoinColumn(name = "cliente_nif_cif", nullable = true) // aquí nullable permite asignar null a compras antes de borrar al cliente
 	private Cliente cliente;
 
 	@OneToMany(mappedBy = "compra", fetch = FetchType.LAZY)
