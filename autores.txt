@@ -1,0 +1,8 @@
+Jefe de proyecto: Silvia Balmaseda
+
+Autores: 
+- Silvia Balmaseda (Github: SilviaBalmaseda)
+- Rafael Robles García (Github: kunohami) 
+
+Repositorio:
+https://github.com/kunohami/ecommerceProject
