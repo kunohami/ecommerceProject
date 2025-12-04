@@ -88,7 +88,7 @@ public class App {
 			tx.begin();
 
 			try {
-				String nifTest = "00000000T";
+				String nifTest = "12300000T";
 
 				// --- LIMPIEZA DE SEGURIDAD (CORRECCIÓN ERROR DUPLICATE ENTRY) ---
 				// Si se ha ejecutado el programa antes, el cliente ya existe. Lo borramos para
@@ -229,7 +229,7 @@ public class App {
 						// 4.  Limpiamos la caché de Hibernate.
 						// Si no hacemos esto, em.find() nos devolvería la 'compra' vieja que tiene en
 						// memoria
-						// y pensaríamos que el cliente sigue ahí. Queremos leer la verdad de la BBDD.
+						// y pensaríamos que el cliente sigue ahí.
 						em.clear();
 
 						System.out
@@ -263,6 +263,76 @@ public class App {
 					System.err.println("Error en prueba de borrado: " + e.getMessage());
 					e.printStackTrace();
 				}
+			}
+
+			// ====================================================
+			// PRUEBA 4: UPDATE DE DATOS (Transacción 3)
+			// ====================================================
+			/**
+			 * Actualiza un cliente diferente al borrado en la prueba 3 y valida que los cambios
+			 * persisten correctamente.
+			 * Elegimos el cliente con NIF 'Y7654321B' del script de datos inicial.
+			 */
+			System.out.println("\n--- 4. UPDATE DE DATOS (Transacción 3) ---");
+			EntityTransaction txUpdate = em.getTransaction();
+			txUpdate.begin();
+			try {
+				String nifAActualizar = "Y7654321B"; // distinto al nifClienteCreado
+				Cliente clienteUpdate = em.find(Cliente.class, nifAActualizar);
+				if (clienteUpdate == null) {
+					System.err.println("No se encontró el cliente " + nifAActualizar + " para actualizar. ¿Se ejecutó el script SQL?");
+				} else {
+					System.out.println("-> Cliente a actualizar encontrado: " + clienteUpdate.getNombreCompleto());
+
+					// Cambios simples en el cliente
+					clienteUpdate.setNombreCompleto("Luis Pérez (Actualizado)");
+					clienteUpdate.setEmail("luis.perez.actualizado@example.com");
+
+					// Actualizamos (o creamos si falta) su información fiscal
+					if (clienteUpdate.getInformacionFiscal() == null) {
+						InformacionFiscal nuevaInfo = new InformacionFiscal();
+						nuevaInfo.setTelefono("+34 600 999 000");
+						nuevaInfo.setDireccionFiscal("Av. Prueba 10, 08002 Barcelona (Act)");
+						clienteUpdate.setInformacionFiscal(nuevaInfo);
+						System.out.println("-> Información fiscal creada y asociada (1:1).");
+					} else {
+						clienteUpdate.getInformacionFiscal().setTelefono("+34 600 999 000");
+						clienteUpdate.getInformacionFiscal().setDireccionFiscal("Av. Prueba 10, 08002 Barcelona (Act)");
+						System.out.println("-> Información fiscal actualizada.");
+					}
+
+					// Opcional: actualizar el estado de su última compra si existe
+					if (clienteUpdate.getCompras() != null && !clienteUpdate.getCompras().isEmpty()) {
+						// Tomamos una compra cualquiera del set
+						Compra algunaCompra = clienteUpdate.getCompras().iterator().next();
+						algunaCompra.setEstado("ACTUALIZADA");
+						System.out.println("-> Estado de una compra del cliente actualizado a 'ACTUALIZADA'.");
+					}
+
+					// Enviamos los UPDATEs
+					em.flush();
+					System.out.println("[COMMIT] Guardando cambios del UPDATE...");
+					txUpdate.commit();
+
+					// Verificación: limpiar contexto y recargar desde BD
+					em.clear();
+					Cliente verificado = em.find(Cliente.class, nifAActualizar);
+					if (verificado != null) {
+						System.out.println("-> Verificación tras UPDATE:");
+						System.out.println("   Nombre: " + verificado.getNombreCompleto());
+						System.out.println("   Email:  " + verificado.getEmail());
+						if (verificado.getInformacionFiscal() != null) {
+							System.out.println("   Teléfono (Fiscal): " + verificado.getInformacionFiscal().getTelefono());
+							System.out.println("   Dirección (Fiscal): " + verificado.getInformacionFiscal().getDireccionFiscal());
+						}
+					} else {
+						System.err.println("Fallo en verificación: el cliente ya no está disponible");
+					}
+				}
+			} catch (Exception e) {
+				if (txUpdate.isActive()) txUpdate.rollback();
+				System.err.println("Error en actualización (Prueba 4): " + e.getMessage());
+				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
