@@ -1,10 +1,8 @@
 package com.silviarafa.ecommerce.ecommerceProject.model;
 
-<<<<<<< Updated upstream
 public class Articulo {
 
 }
-=======
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
@@ -150,4 +148,3 @@ public class Articulo {
 	}
 
 }
->>>>>>> Stashed changes

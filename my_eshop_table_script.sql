@@ -46,13 +46,8 @@ CREATE TABLE IF NOT EXISTS compra (
   fecha_compra datetime DEFAULT NULL,
   estado varchar(20) DEFAULT '',
   direccion_entrega varchar(255) DEFAULT '',
-<<<<<<< Updated upstream
-  precio_total decimal(10,2) NOT NULL,
-  cliente_nif_cif varchar(20) NOT NULL,
-=======
   precio_total decimal(10,2) DEFAULT 0.0,
   cliente_nif_cif varchar(20) NULL, -- esto permite asignar null a compras antes de borrar al cliente
->>>>>>> Stashed changes
   PRIMARY KEY (id),
   KEY compra_cliente_FK (cliente_nif_cif),
   CONSTRAINT compra_cliente_FK 

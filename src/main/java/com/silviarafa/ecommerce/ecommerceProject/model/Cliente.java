@@ -53,7 +53,11 @@ public class Cliente {
 	private InformacionFiscal informacionFiscal;
 
 	// --- RELACIÓN 1:N ---
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	// @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	// private Set<Compra> compras = new HashSet<>();
+
+	//Elimina orphanRemoval = true y cambia CascadeType.ALL por operaciones específicas que no incluyan el borrado (PERSIST y MERGE).
+	@OneToMany(mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	private Set<Compra> compras = new HashSet<>();
 
 	public Cliente() {
