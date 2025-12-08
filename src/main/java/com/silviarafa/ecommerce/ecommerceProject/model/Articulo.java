@@ -1,8 +1,5 @@
 package com.silviarafa.ecommerce.ecommerceProject.model;
 
-public class Articulo {
-
-}
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
