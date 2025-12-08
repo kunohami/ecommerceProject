@@ -86,8 +86,7 @@ public class InformacionFiscal {
 
 	@Override
 	public String toString() {
-		return "InformacionFiscal{" + "id='" + nifCif + '\'' + ", telefono='" + telefono + '\'' + ", direccionFiscal='"
-				+ direccionFiscal + '\'' + '}';
+		return "Informacion Fiscal: " + "NIF/CIF='" + nifCif + ", Teléfono=" + telefono + ", Dirección Fiscal=" + direccionFiscal + '.';
 	}
 
 	@Override

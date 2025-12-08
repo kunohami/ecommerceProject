@@ -1,7 +1,7 @@
-Jefe de proyecto: Silvia Balmaseda
+Jefe de proyecto: Silvia Balmaseda Hernández
 
 Autores: 
-- Silvia Balmaseda (Github: SilviaBalmaseda)
+- Silvia Balmaseda Hernández (Github: SilviaBalmaseda)
 - Rafael Robles García (Github: kunohami) 
 
 Repositorio:

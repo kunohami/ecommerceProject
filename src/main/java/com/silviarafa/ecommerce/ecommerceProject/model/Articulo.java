@@ -1,12 +1,14 @@
 package com.silviarafa.ecommerce.ecommerceProject.model;
 
+public class Articulo {
+
+}
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,7 +56,7 @@ public class Articulo {
 	@Column(name = "stock")
 	private Integer stock;
 
-	@OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "articulo", fetch = FetchType.LAZY) // Para que JPA no borre ArticuloCompra cuando se borre Articulo.
 	private Set<ArticuloCompra> compras = new HashSet<>();
 
 	public Articulo() {
@@ -120,9 +122,13 @@ public class Articulo {
 
 	@Override
 	public String toString() {
+		return nombre + ", Descripción=" + descripcion + ", Precio Actual=" + precioActual + ", Stock=" + stock + ".";
+	}
+	/*
+	public String toString() {
 		return "Articulo [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precioActual="
 				+ precioActual + ", stock=" + stock + "]";
-	}
+	}*/
 
 	@Override
 	public int hashCode() {
