@@ -46,8 +46,13 @@ CREATE TABLE IF NOT EXISTS compra (
   fecha_compra datetime DEFAULT NULL,
   estado varchar(20) DEFAULT '',
   direccion_entrega varchar(255) DEFAULT '',
+<<<<<<< Updated upstream
   precio_total decimal(10,2) NOT NULL,
   cliente_nif_cif varchar(20) NOT NULL,
+=======
+  precio_total decimal(10,2) DEFAULT 0.0,
+  cliente_nif_cif varchar(20) NULL, -- esto permite asignar null a compras antes de borrar al cliente
+>>>>>>> Stashed changes
   PRIMARY KEY (id),
   KEY compra_cliente_FK (cliente_nif_cif),
   CONSTRAINT compra_cliente_FK 
@@ -102,19 +107,17 @@ INSERT INTO articulo (nombre, descripcion, precio_actual, stock) VALUES
   ('Auriculares bluetooth', 'Auriculares inalámbricos con cancelación', 49.50, 50),
   ('Taza cerámica', 'Taza 300ml, apta para lavavajillas', 5.00, 200);
 
--- Compras (ids autogenerados)
+-- Compras 
 INSERT INTO compra (fecha_compra, estado, direccion_entrega, precio_total, cliente_nif_cif) VALUES
   ('2024-04-01 10:00:00', 'procesando', 'C/ Ejemplo 1, 28001 Madrid', 39.98, 'X1234567A'),
   ('2024-04-02 16:20:00', 'enviado',     'Av. Prueba 10, 08002 Barcelona', 64.50, 'Y7654321B');
 
 -- Articulo_compra (relación muchos a muchos)
--- Compra 1: 2 unidades de Camiseta básica a 19.99 = 39.98
 INSERT INTO articulo_compra (articulo_id, compra_id, unidades, precio_compra) VALUES
-  (1, 1, 2, 19.99);
+  (1, 1, 2, 39.98);
 
--- Compra 2: 1 Auriculares bluetooth a 49.50 + 3 Taza cerámica a 5.00 = 49.50 + 15.00 = 64.50
 INSERT INTO articulo_compra (articulo_id, compra_id, unidades, precio_compra) VALUES
   (2, 2, 1, 49.50),
-  (3, 2, 3, 5.00);
+  (3, 2, 3, 15.00);
 
 

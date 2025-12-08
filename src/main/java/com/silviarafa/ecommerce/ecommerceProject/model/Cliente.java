@@ -42,7 +42,7 @@ public class Cliente {
 	@Column(name = "nombre_completo", nullable = false)
 	private String nombreCompleto;
 
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "email", nullable = true, unique = false)
 	private String email;
 
 	@Column(name = "fecha_registro", nullable = true)
@@ -140,10 +140,10 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return "Cliente{" + "nifCif='" + nifCif + '\'' + ", nombreCompleto='" + nombreCompleto + '\'' + ", email='"
-				+ email + '\'' + ", fechaRegistro=" + fechaRegistro + ", informacionFiscal="
-				+ (informacionFiscal != null ? informacionFiscal.getNifCif() : "N/A") + ", num_compras="
-				+ getNumCompras() + '}';
+		return "Cliente: " + "NIF/CIF=" + nifCif + ", Nombre Completo=" + nombreCompleto + ", Email="
+				+ email + ", Fecha Registro=" + fechaRegistro + ".\n"
+				+ (informacionFiscal != null ? informacionFiscal.toString() : "Sin información fiscal") 
+				+ "\nNúmero de compras=" + getNumCompras() + '.';
 	}
 
 	@Override
