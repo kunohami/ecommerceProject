@@ -155,6 +155,22 @@ public class ArticuloCompra {
 	// --- Composite Key class ---
 	/**
 	 * Clase embebible que representa la clave primaria compuesta de {@link ArticuloCompra}.
+	 * <p>
+	 * Esta clase es necesaria porque en la base de datos la tabla "articulo_compra" tiene una clave primaria
+	 * compuesta por dos columnas: "articulo_id" y "compra_id". Para mapear correctamente esta estructura
+	 * en JPA, usamos una clase embebida que encapsula ambas claves. Esto permite que JPA gestione
+	 * automáticamente las relaciones y facilite el uso de estas claves en el código.
+	 * </p>
+	 * <p>
+	 * Usar una clase embebida hace que el código sea más limpio y reutilizable, ya que encapsula la lógica
+	 * de la clave compuesta en un solo lugar.
+	 * </p>
+	 * <p>
+	 * Si no se utilizara esta clase embebida, sería necesario manejar las claves primarias compuestas
+	 * manualmente en cada entidad que las utilice. Esto implicaría definir múltiples campos para las claves
+	 * en la entidad principal, escribir métodos personalizados para gestionar estas claves y realizar
+	 * consultas más complejas. Además, el código sería más propenso a errores y menos mantenible.
+	 * </p>
 	 */
 	@Embeddable
 	public static class ArticuloCompraId implements Serializable {

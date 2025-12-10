@@ -9,6 +9,20 @@ import java.util.Map;
 import com.silviarafa.ecommerce.ecommerceProject.model.*;
 import jakarta.persistence.*;
 
+/**
+ * Aplicación principal de pruebas (Test Runner).
+ * <p>
+ * Ejecuta secuencialmente:
+ * 1. Lectura de datos existentes (probar conexión y mapeo).
+ * 2. Creación de un escenario completo de venta (Cliente -> Compra -> Artículos).
+ * 3. Prueba de integridad: Borrado del cliente para verificar que la compra persiste (ON DELETE SET NULL).
+ * 4. Actualización de datos de cliente y artículo para validar operaciones de modificación.
+ * 5. Eliminación de artículos y clientes para comprobar restricciones y cascadas.
+ * </p>
+ * @version 2.0
+ * @authors Silvia Balmaseda, Rafael Robles
+ */
+
 public class AppEcommerce {
 
 	public static void main(String[] args) {
