@@ -68,6 +68,13 @@ The default Maven profile is `dev` (localhost, port 3310). Profiles `pre` and `p
 
 `AppEcommerce.java` runs a full CRUD sequence: creates a customer with billing info, adds a product, places an order with multiple line items, updates records, and deletes them — all with explicit transaction management and rollback on error.
 
+## Related projects
+
+| Project | Description |
+|---|---|
+| [ecommerceSpringBootBackend](https://github.com/SilviaBalmaseda/ecommerceSpringBootBackend) | Second iteration — layered Spring Boot library backed by Oracle |
+| [ecommerceSpringBootFront](https://github.com/SilviaBalmaseda/ecommerceSpringBootFront) | Console client that consumes the backend JAR |
+
 ## Authors
 
 Silvia Balmaseda Hernández · Rafael Robles García  
